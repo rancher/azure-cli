@@ -24,10 +24,9 @@ steps:
       - name: docker_pipe
         path: \\\\.\\pipe\\docker_engine
     when:
-      instance:
-        - drone-publish.rancher.io
       event:
         - tag
+        - pull_request
 
 volumes:
   - name: docker_pipe
@@ -59,10 +58,9 @@ steps:
       - name: docker_pipe
         path: \\\\.\\pipe\\docker_engine
     when:
-      instance:
-        - drone-publish.rancher.io
       event:
         - tag
+        - pull_request
 
 volumes:
   - name: docker_pipe
@@ -90,4 +88,3 @@ steps:
 depends_on:
   - windows-1809
   - windows-1903
-  
