@@ -8,83 +8,32 @@ platform:
   version: 1809
 
 steps:
-  - name: publish-windows-1809
-    image: plugins/docker
-    settings:
-      username:
-        from_secret: docker_username
-      password:
-        from_secret: docker_password
-      dockerfile: Dockerfile
-      repo: rancher/azure-cli
-      tag: "${DRONE_TAG}-windows-1809"
-      build_args:
-        - SERVERCORE_VERSION=1809
+  - name: build
+    pull: default
+    image: maiwj/dapper:windows-1809
+    commands:
+      - dapper.exe -f Dockerfile.dapper ci
     volumes:
       - name: docker_pipe
         path: \\\\.\\pipe\\docker_engine
-    when:
-      event:
-        - tag
-        - pull_request
-
-volumes:
-  - name: docker_pipe
-    host:
-      path: \\\\.\\pipe\\docker_engine
----
-kind: pipeline
-name: windows-1903
-
-platform:
-  os: windows
-  arch: amd64
-  version: 1903
-
-steps:
-  - name: publish-windows-1903
-    image: plugins/docker
+  
+  - name: github_binary_release
+    image: plugins/github-release
     settings:
-      username:
-        from_secret: docker_username
-      password:
-        from_secret: docker_password
-      dockerfile: Dockerfile
-      repo: rancher/azure-cli
-      tag: "${DRONE_TAG}-windows-1903"
-      build_args:
-        - SERVERCORE_VERSION=1903
-    volumes:
-      - name: docker_pipe
-        path: \\\\.\\pipe\\docker_engine
-    when:
-      event:
-        - tag
-        - pull_request
-
-volumes:
-  - name: docker_pipe
-    host:
-      path: \\\\.\\pipe\\docker_engine
----
-kind: pipeline
-name: manifest
-
-steps:
-  - name: push-manifest
-    image: plugins/manifest:1.1.0
-    settings:
-      username:
-        from_secret: docker_username
-      password:
-        from_secret: docker_password
-      spec: manifest.tmpl
-      ignore_missing: true
+      api_key:
+        from_secret: github_token
+      files:
+      - "dist/*"
     when:
       instance:
-        - drone-publish.rancher.io
+      - drone-publish.rancher.io
+      ref:
+      - refs/head/master
+      - refs/tags/*
       event:
-        - tag
-depends_on:
-  - windows-1809
-  - windows-1903
+      - tag
+
+volumes:
+  - name: docker_pipe
+    host:
+      path: \\\\.\\pipe\\docker_engine
