@@ -8,7 +8,7 @@ Compile the azure cli for Windows Nanoserver.
 2. `git clone https://gihub.com/rancher/azure-cli`
 3. `make.bat`
 4. Expand `dist/azure-cli.zip` to Nanoserver
-5. Append the exection `PATH`, e.g: if the expanded path is `c:\azure-cli`, update the environment variable `PATH` with `c:\azure-cli\;c:\azure-cli\Scripts\;$($env:PATH)`
+5. Append the exection `PATH`, e.g: if the expanded path is `c:\azure-cli`, update the environment variable `PATH` with `c:\azure-cli\python\;c:\azure-cli\python\Scripts\;$($env:PATH)`
 
 ## How to change azure cli version
 
