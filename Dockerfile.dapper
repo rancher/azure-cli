@@ -34,8 +34,7 @@ RUN $URL = 'https://bootstrap.pypa.io/get-pip.py'; \
     \
     Write-Host 'Complete.'
 # azure version
-ENV AZURECLI_VERSION=2.0.69
-
+ENV AZURECLI_VERSION=2.2.0
 ENV DAPPER_ENV REPO TAG DRONE_TAG
 ENV DAPPER_SOURCE /azure-cli
 ENV DAPPER_OUTPUT ./dist
